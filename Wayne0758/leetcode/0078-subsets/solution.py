@@ -1,16 +1,6 @@
-class Solution(object):
-    def subsets(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
-        c=[]
-        for i in range((2**len(nums))):
-            a=bin(i)[2:]
-            a=a.zfill(len(nums))
-            b=[]
-            for j in range(len(a)):
-                if a[j]=='1':
-                    b.append(nums[j])
-            c.append(b)
-        return c
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = [[]]
+        for num in nums:
+            res += [item+[num] for item in res]
+        return res
