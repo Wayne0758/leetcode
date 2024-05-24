@@ -1,28 +1,43 @@
-class Solution(object):
-    def maxScoreWords(self, words, letters, score):
-        """
-        :type words: List[str]
-        :type letters: List[str]
-        :type score: List[int]
-        :rtype: int
-        """
-        cnt=[0 for _ in range(26)]
-        for l in letters:
-            cnt[ord(l)-97]+=1
-        return self.dfs(words,cnt,score,0)
-    def dfs(self,words,cnt,score,idx):
-        res=0
-        for i in range(idx,len(words)):
-            s=0
-            flag=1
-            for c in words[i]:
-                cnt[ord(c)-97]-=1
-                if cnt[ord(c)-97]<0:
-                    flag=0
-                s+=score[ord(c)-97]
-            if flag==1:
-                s+=self.dfs(words,cnt,score,i+1)
-                res=max(res,s)
-            for c in words[i]:
-                cnt[ord(c)-97]+=1
-        return res
+class Solution:
+    def __init__(self):
+        self.hashmap = collections.defaultdict(int)
+    
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        for letter in letters:
+            self.hashmap[letter] += 1
+        wordscores = self.getscore(words, score)
+        return self.dfs(wordscores, dict(self.hashmap), 0, 0)
+
+    def dfs(self, wordscores: List[tuple], hashmaptmp, start: int, tmpscore: int) -> int:
+        maxscore = tmpscore
+        for i in range(start, len(wordscores)):
+            word, wordscore, letter_count = wordscores[i]
+            if self.can_form_word(letter_count, hashmaptmp):
+                self.update_hashmap(letter_count, hashmaptmp, decrement=True)
+                maxscore = max(maxscore, self.dfs(wordscores, hashmaptmp, i + 1, tmpscore + wordscore))
+                self.update_hashmap(letter_count, hashmaptmp, decrement=False)
+        return maxscore
+
+    def getscore(self, words: List[str], score: List[int]) -> List[tuple]:
+        wordscores = []
+        for word in words:
+            wordscore = 0
+            letter_count = collections.defaultdict(int)
+            for c in word:
+                wordscore += score[ord(c) - ord('a')]
+                letter_count[c] += 1
+            wordscores.append((word, wordscore, letter_count))
+        return wordscores
+
+    def can_form_word(self, letter_count, hashmaptmp):
+        for c in letter_count:
+            if letter_count[c] > hashmaptmp.get(c, 0):
+                return False
+        return True
+
+    def update_hashmap(self, letter_count, hashmaptmp, decrement=True):
+        for c in letter_count:
+            if decrement:
+                hashmaptmp[c] -= letter_count[c]
+            else:
+                hashmaptmp[c] += letter_count[c]
