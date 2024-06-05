@@ -1,16 +1,14 @@
-class Solution(object):
-    def commonChars(self, words):
-        """
-        :type words: List[str]
-        :rtype: List[str]
-        """
-        a=[]
-        for i in range(len(words[0])):
-            flag=0
-            for j in range(1,len(words)):
-                if words[0][i] in words[j]:
-                    words[j]=words[j].replace(words[0][i],'',1)
-                    flag+=1
-            if flag==len(words)-1:
-                a.append(words[0][i])
-        return a
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        res = []
+        for c in words[0]:
+            flag=1
+            for i in range(1, len(words)):
+                if c in words[i]:
+                    words[i] = words[i].replace(c,'', 1)
+                else:
+                    flag=0
+                    break
+            if flag==1:
+                res+=[c]
+        return res
