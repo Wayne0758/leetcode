@@ -1,17 +1,14 @@
-class Solution(object):
-    def relativeSortArray(self, arr1, arr2):
-        """
-        :type arr1: List[int]
-        :type arr2: List[int]
-        :rtype: List[int]
-        """
-        a=[]
-        c=list(arr1)
-        for i in range(len(arr2)):
-            b=arr1.count(arr2[i])
-            for j in range(b):
-                a.append(arr2[i])
-                c.remove(arr2[i])
-        c.sort()
-        a=a+c
-        return a
+class Solution:
+    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        hashmap = collections.defaultdict()
+        res2=[]
+        for num in arr1:
+            if num in arr2:
+                hashmap[num] = hashmap.get(num, 0) +1
+            else:
+                res2.append(num)
+        res2.sort()
+        res=[]
+        for num in arr2:
+            res += [num for _ in range(hashmap[num])]
+        return res+res2
