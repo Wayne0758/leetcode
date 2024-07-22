@@ -1,16 +1,8 @@
-class Solution(object):
-    def sortPeople(self, names, heights):
-        """
-        :type names: List[str]
-        :type heights: List[int]
-        :rtype: List[str]
-        """
-        a=[]
-        for i in range(len(names)):
-            a.append([names[i],heights[i]])
-        a.sort(key = lambda x: x[1])
-        b=[]
-        for i in range(len(a)):
-            b.append(a[i][0])
-        b.reverse()
-        return b
+class Solution:
+    def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:
+        nandhs = zip(names,heights)
+        nandhs = sorted(nandhs, key = lambda x:x[1])
+        res = []
+        for nandh in nandhs:
+            res += [nandh[0]]
+        return res[::-1]
