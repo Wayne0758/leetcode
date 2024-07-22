@@ -1,19 +1,16 @@
-class Solution(object):
-    def luckyNumbers (self, matrix):
-        """
-        :type matrix: List[List[int]]
-        :rtype: List[int]
-        """
-        a=[]
-        for j in range(len(matrix[0])):
-            x=0
-            for i in range(len(matrix)):
-                if matrix[i][j]>x:
-                    x=matrix[i][j]
-            a.append(x)
-        b=[]
-        for i in range(len(matrix)):
-            for j in range(len(matrix[i])):
-                if matrix[i][j]==min(matrix[i]) and matrix[i][j]==a[j]:
-                    b.append(matrix[i][j])
-        return b
+class Solution:
+    def luckyNumbers (self, matrix: List[List[int]]) -> List[int]:
+        res = []
+        m = len(matrix)
+        n = len(matrix[0])
+        min_in_row = []
+        for i in range(m):
+            min_in_row.append(min(matrix[i]))
+        for j in range(n):
+            temp = 0
+            for i in range(m):
+                if matrix[i][j] > temp:
+                    temp = matrix[i][j]
+            if temp in min_in_row:
+                res.append(temp)
+        return res
