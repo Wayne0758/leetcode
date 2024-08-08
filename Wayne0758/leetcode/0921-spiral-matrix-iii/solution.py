@@ -1,22 +1,24 @@
-class Solution(object):
-    def spiralMatrixIII(self, rows, cols, rStart, cStart):
-        """
-        :type rows: int
-        :type cols: int
-        :type rStart: int
-        :type cStart: int
-        :rtype: List[List[int]]
-        """
-        res=[[rStart,cStart]]
-        dirs=[[0,1],[1,0],[0,-1],[-1,0]]
-        step=0
-        cur=0
-        while len(res)<(rows*cols):
-            if cur==0 or cur==2:step+=1
-            for i in range(step):
-                rStart+=dirs[cur][0]
-                cStart+=dirs[cur][1]
-                if 0<=rStart<rows and 0<=cStart<cols:
-                    res.append([rStart,cStart])
-            cur=(cur+1)%4
-        return res
+class Solution:
+    def spiralMatrixIII(self, rows: int, cols: int, rStart: int, cStart: int) -> List[List[int]]:
+        d1 = [0,1,0]
+        d2 = [0,-1,0]
+        c = 0
+        res = [[rStart, cStart]]
+        cur = [rStart, cStart]
+        num = rows*cols
+        if num == 1:
+            return res
+        while True:
+            c+=1
+            d=[]
+            if c%2==1:
+                d = d1
+            else:
+                d = d2
+            for i in range(2):
+                for _ in range(c):
+                    cur = [cur[0]+d[i],cur[1]+d[i+1]]
+                    if 0<=cur[0]<rows and 0<=cur[1]<cols:
+                        res.append(cur)
+                        if len(res)==num:
+                            return res
